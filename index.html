@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SmarTV: download for Mac and Ubuntu</title>
+<meta name="description" content="SmarTV is a free app for watching your own IPTV subscription on Mac and Ubuntu. Live TV, movies and series, with English subtitles and TV-remote support.">
+<meta name="theme-color" content="#0B0F15">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+  :root {
+    --bg: oklch(14.5% 0.012 255);
+    --bg-1: oklch(18% 0.014 255);
+    --bg-2: oklch(22% 0.016 255);
+    --bg-3: oklch(27% 0.018 255);
+    --line: oklch(40% 0.012 255 / 0.45);
+    --line-strong: oklch(55% 0.012 255 / 0.7);
+    --text: oklch(96.5% 0.004 255);
+    --dim: oklch(76% 0.012 255);
+    --faint: oklch(62% 0.012 255);
+    --accent: oklch(78% 0.16 70);
+    --accent-strong: oklch(72% 0.17 62);
+    --on-accent: oklch(18% 0.03 60);
+    --shadow: 0 18px 40px -18px oklch(5% .01 255 / .8);
+    --ease: cubic-bezier(.16, 1, .3, 1);
+    --gutter: clamp(1rem, 0.4rem + 3vw, 3rem);
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --sans: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    color: var(--text);
+    font: 400 1rem/1.6 var(--sans);
+    background:
+      radial-gradient(1100px 560px at 80% -10%, oklch(30% 0.05 70 / .22), transparent 60%),
+      var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 8px; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 var(--gutter); }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* Header */
+  header.top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1.25rem; }
+  .lockup { display: inline-flex; align-items: center; gap: .55rem; text-decoration: none; }
+  .lockup img { width: 34px; height: 34px; }
+  .lockup span { font: 800 1.35rem/1 var(--display); letter-spacing: -0.02em; }
+  nav.links { display: flex; gap: .25rem; }
+  nav.links a { text-decoration: none; color: var(--dim); font-weight: 500; font-size: .925rem; padding: .45rem .85rem; border-radius: 999px; transition: background 140ms var(--ease), color 140ms var(--ease); }
+  nav.links a:hover { color: var(--text); background: var(--bg-2); }
+
+  /* Buttons */
+  .btn { display: inline-flex; align-items: center; gap: .55rem; font: 600 1rem/1 var(--sans); text-decoration: none; padding: .95rem 1.4rem; border-radius: 999px; border: 1px solid transparent; cursor: pointer; white-space: nowrap; transition: transform 140ms var(--ease), background 140ms var(--ease), border-color 140ms var(--ease); }
+  .btn:active { transform: translateY(1px) scale(.98); }
+  .btn i { font-size: 1.2em; }
+  .btn-primary { background: var(--accent); color: var(--on-accent); }
+  .btn-primary:hover { background: var(--accent-strong); }
+  .btn-ghost { background: var(--bg-1); color: var(--text); border-color: var(--line-strong); }
+  .btn-ghost:hover { background: var(--bg-3); }
+  .btn-sm { padding: .65rem 1.05rem; font-size: .925rem; }
+
+  /* Hero */
+  .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(2rem, 4vw, 4.5rem); align-items: center; padding-block: clamp(2.5rem, 6vw, 5.5rem) clamp(3rem, 6vw, 5rem); }
+  .eyebrow { display: inline-flex; align-items: center; gap: .5rem; color: var(--dim); font-size: .875rem; font-weight: 500; font-variant-numeric: tabular-nums; margin-bottom: 1.25rem; }
+  .eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+  h1 { font: 800 clamp(2.5rem, 1.2rem + 4.2vw, 4.75rem)/1.02 var(--display); letter-spacing: -0.035em; margin: 0 0 1.25rem; }
+  h1 em { font-style: normal; color: var(--accent); }
+  .lede { color: var(--dim); font-size: clamp(1.05rem, 1rem + .3vw, 1.2rem); max-width: 34rem; margin: 0 0 2rem; }
+  .cta { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
+  .cta-note { color: var(--faint); font-size: .875rem; margin-top: 1rem; font-variant-numeric: tabular-nums; }
+
+  /* App mock: drawn shapes only, no real artwork */
+  .mock { position: relative; border-radius: 20px; background: var(--bg-1); border: 1px solid var(--line); box-shadow: var(--shadow), 0 40px 80px -40px oklch(30% 0.08 70 / .35); overflow: hidden; aspect-ratio: 16 / 10.5; }
+  .mock-bar { display: flex; align-items: center; gap: .4rem; padding: .7rem .9rem; border-bottom: 1px solid var(--line); }
+  .mock-bar b { width: 10px; height: 10px; border-radius: 50%; background: var(--bg-3); }
+  .mock-body { padding: 4.5% 5%; display: grid; gap: 5%; height: calc(100% - 37px); grid-template-rows: auto 1fr auto; }
+  .mock-nav { display: flex; align-items: center; gap: 3%; }
+  .mock-nav img { width: 7%; min-width: 18px; }
+  .mock-pill { height: 10px; border-radius: 99px; background: var(--bg-3); width: 9%; }
+  .mock-pill.on { background: var(--text); opacity: .85; }
+  .mock-hero { border-radius: 12px; background: radial-gradient(120% 140% at 85% 10%, oklch(38% 0.07 70 / .9), transparent 55%), linear-gradient(120deg, var(--bg-2), var(--bg-3)); display: flex; flex-direction: column; justify-content: flex-end; gap: 6%; padding: 5%; }
+  .mock-title { height: 18%; width: 46%; border-radius: 6px; background: var(--text); opacity: .9; }
+  .mock-meta { height: 7%; width: 30%; border-radius: 4px; background: var(--faint); opacity: .6; }
+  .mock-play { width: 18%; height: 16%; min-height: 14px; border-radius: 99px; background: var(--accent); }
+  .mock-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 2.4%; }
+  .mock-row span { aspect-ratio: 2 / 3; border-radius: 8px; background: linear-gradient(160deg, var(--bg-3), var(--bg-2)); }
+  .mock-row span:nth-child(2) { background: linear-gradient(160deg, oklch(34% 0.05 220), var(--bg-2)); }
+  .mock-row span:nth-child(3) { outline: 3px solid var(--accent); outline-offset: 2px; transform: scale(1.06); background: linear-gradient(160deg, oklch(40% 0.08 60), var(--bg-2)); }
+  .mock-row span:nth-child(5) { background: linear-gradient(160deg, oklch(32% 0.05 150), var(--bg-2)); }
+
+  /* Notice */
+  .notice { display: flex; gap: 1rem; align-items: flex-start; border: 1px solid var(--line); background: var(--bg-1); border-radius: 12px; padding: 1.1rem 1.25rem; color: var(--dim); }
+  .notice i { color: var(--accent); font-size: 1.4rem; flex: none; margin-top: .1rem; }
+  .notice strong { color: var(--text); font-weight: 600; }
+
+  /* Sections */
+  section { padding-block: clamp(3.5rem, 7vw, 6rem) 0; scroll-margin-top: 1rem; }
+  h2 { font: 800 clamp(1.75rem, 1.2rem + 2vw, 2.75rem)/1.1 var(--display); letter-spacing: -0.03em; margin: 0 0 .6rem; }
+  .sub { color: var(--dim); margin: 0 0 2.25rem; max-width: 40rem; }
+
+  /* Downloads list */
+  .dl { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .dl li { display: grid; grid-template-columns: 3rem minmax(0, 1fr) auto auto; align-items: center; gap: 1.25rem; padding: 1.25rem 0; border-bottom: 1px solid var(--line); }
+  .dl .os { width: 3rem; height: 3rem; display: grid; place-items: center; border-radius: 12px; background: var(--bg-2); font-size: 1.6rem; }
+  .dl h3 { margin: 0; font: 600 1.075rem/1.3 var(--sans); display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+  .dl p { margin: .2rem 0 0; color: var(--faint); font-size: .875rem; }
+  .dl .size { color: var(--dim); font-size: .875rem; font-variant-numeric: tabular-nums; }
+  .tag { font: 600 .7rem/1 var(--sans); letter-spacing: .04em; text-transform: uppercase; color: var(--on-accent); background: var(--accent); padding: .3rem .5rem; border-radius: 99px; }
+  .dl li.soon { color: var(--faint); }
+  .dl li.soon .os { color: var(--faint); }
+
+  /* Install steps */
+  .install { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.5rem, 3vw, 2.5rem); }
+  .install article { background: var(--bg-1); border: 1px solid var(--line); border-radius: 20px; padding: clamp(1.25rem, 2.5vw, 2rem); }
+  .install h3 { display: flex; align-items: center; gap: .6rem; font: 800 1.4rem/1.2 var(--display); letter-spacing: -0.02em; margin: 0 0 1.25rem; }
+  .install h3 i { font-size: 1.5rem; color: var(--accent); }
+  ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 1rem; }
+  ol.steps > li { counter-increment: s; display: grid; grid-template-columns: 1.9rem minmax(0, 1fr); gap: .8rem; color: var(--dim); }
+  ol.steps > li::before { content: counter(s); width: 1.9rem; height: 1.9rem; border-radius: 50%; display: grid; place-items: center; background: var(--bg-3); color: var(--text); font-weight: 600; font-size: .875rem; font-variant-numeric: tabular-nums; }
+  ol.steps strong { color: var(--text); font-weight: 600; }
+  .alt { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--line); color: var(--faint); font-size: .925rem; }
+  .alt strong { color: var(--dim); }
+
+  .cmd { display: flex; align-items: center; gap: .5rem; margin-top: .55rem; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: .55rem .55rem .55rem .85rem; }
+  .cmd code { flex: 1; min-width: 0; overflow-x: auto; font: 500 .85rem/1.5 var(--mono); color: var(--text); white-space: nowrap; }
+  .copy { flex: none; display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 8px; border: 0; background: var(--bg-2); color: var(--dim); cursor: pointer; font-size: 1.05rem; transition: background 140ms var(--ease), color 140ms var(--ease); }
+  .copy:hover { background: var(--bg-3); color: var(--text); }
+  .copy.done { color: var(--accent); }
+
+  /* Features */
+  .features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(2rem, 5vw, 4rem); margin: 0; }
+  .features > div { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); gap: 1rem; padding: 1.4rem 0; border-top: 1px solid var(--line); }
+  .features i { font-size: 1.6rem; color: var(--accent); }
+  .features dt { font-weight: 600; margin-bottom: .2rem; }
+  .features dd { margin: 0; color: var(--dim); font-size: .95rem; }
+
+  footer { margin-top: clamp(4rem, 8vw, 7rem); padding-block: 2rem 2.5rem; border-top: 1px solid var(--line); color: var(--faint); font-size: .875rem; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; }
+  footer a { color: var(--dim); }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: minmax(0, 1fr); }
+    .install, .features { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 640px) {
+    nav.links a:not(.keep) { display: none; }
+    .dl li { grid-template-columns: 3rem minmax(0, 1fr); }
+    .dl .size { grid-column: 2; }
+    .dl .btn { grid-column: 1 / -1; justify-content: center; }
+    .cta .btn { flex: 1 1 100%; justify-content: center; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; }
+    .mock-row span:nth-child(3) { transform: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="lockup" href="./" aria-label="SmarTV home"><img src="logo-mark.svg" alt="" width="34" height="34"><span>SmarTV</span></a>
+    <nav class="links" aria-label="Main">
+      <a href="#download" class="keep">Download</a>
+      <a href="#install">Install</a>
+      <a href="#features">Features</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title" style="padding-top:0">
+      <div>
+        <p class="eyebrow"><span class="dot" aria-hidden="true"></span><span id="release-line">Free for Mac and Ubuntu</span></p>
+        <h1 id="hero-title">Your IPTV, in a <em>proper</em> app.</h1>
+        <p class="lede">SmarTV turns the IPTV subscription you already have into a calm, fast app for your computer and TV. Live TV, movies and series, sorted by industry and genre, with English subtitles.</p>
+        <div class="cta">
+          <a class="btn btn-primary" id="primary-dl" href="#download"><i class="ph-fill ph-download-simple" aria-hidden="true"></i><span>Download SmarTV</span></a>
+          <a class="btn btn-ghost" href="#download" id="other-dl">All downloads</a>
+        </div>
+        <p class="cta-note" id="primary-note">macOS 12 or newer on Apple silicon · Ubuntu 22.04 or newer</p>
+      </div>
+      <div class="mock" role="img" aria-label="Drawing of the SmarTV home screen: a featured title with a play button and a row of posters">
+        <div class="mock-bar" aria-hidden="true"><b></b><b></b><b></b></div>
+        <div class="mock-body" aria-hidden="true">
+          <div class="mock-nav"><img src="logo-mark.svg" alt=""><span class="mock-pill on"></span><span class="mock-pill"></span><span class="mock-pill"></span><span class="mock-pill"></span></div>
+          <div class="mock-hero"><span class="mock-title"></span><span class="mock-meta"></span><span class="mock-play"></span></div>
+          <div class="mock-row"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="notice" role="note">
+      <i class="ph ph-info" aria-hidden="true"></i>
+      <p style="margin:0"><strong>SmarTV has no channels, movies or series of its own.</strong> It is a player. You sign in with the IPTV account from your own provider, and everything you watch comes from that account.</p>
+    </div>
+
+    <section id="download" aria-labelledby="dl-title">
+      <h2 id="dl-title">Download</h2>
+      <p class="sub" id="dl-sub">Pick the file for your computer. Every download is free, and the app tells you when an update is ready.</p>
+      <ul class="dl">
+        <li data-asset="mac">
+          <span class="os" aria-hidden="true"><i class="ph-fill ph-apple-logo"></i></span>
+          <div><h3>macOS <span class="tag">Apple silicon</span></h3><p>Disk image (.dmg) for M1 and newer Macs</p></div>
+          <span class="size" data-size></span>
+          <a class="btn btn-primary btn-sm" data-link href="https://github.com/Tayyab-Tahir1/smartv-releases/releases/latest"><i class="ph ph-download-simple" aria-hidden="true"></i>Download .dmg</a>
+        </li>
+        <li data-asset="deb">
+          <span class="os" aria-hidden="true"><i class="ph-fill ph-linux-logo"></i></span>
+          <div><h3>Ubuntu <span class="tag">Recommended</span></h3><p>Package (.deb) that installs like any other app</p></div>
+          <span class="size" data-size></span>
+          <a class="btn btn-primary btn-sm" data-link href="https://github.com/Tayyab-Tahir1/smartv-releases/releases/latest"><i class="ph ph-download-simple" aria-hidden="true"></i>Download .deb</a>
+        </li>
+        <li data-asset="appimage">
+          <span class="os" aria-hidden="true"><i class="ph ph-linux-logo"></i></span>
+          <div><h3>Ubuntu and other Linux</h3><p>AppImage: runs without installing and updates itself</p></div>
+          <span class="size" data-size></span>
+          <a class="btn btn-ghost btn-sm" data-link href="https://github.com/Tayyab-Tahir1/smartv-releases/releases/latest"><i class="ph ph-download-simple" aria-hidden="true"></i>Download AppImage</a>
+        </li>
+        <li class="soon">
+          <span class="os" aria-hidden="true"><i class="ph ph-device-mobile"></i></span>
+          <div><h3>iPhone</h3><p>Coming later, as a standalone app you install with SideStore</p></div>
+        </li>
+      </ul>
+    </section>
+
+    <section id="install" aria-labelledby="install-title">
+      <h2 id="install-title">Install</h2>
+      <p class="sub">A few clicks on each system. You only do this once; after that, SmarTV keeps itself up to date.</p>
+      <div class="install">
+        <article aria-labelledby="mac-title">
+          <h3 id="mac-title"><i class="ph-fill ph-apple-logo" aria-hidden="true"></i>Mac</h3>
+          <ol class="steps">
+            <li><span>Open the <strong>.dmg</strong> you downloaded and drag <strong>SmarTV</strong> into <strong>Applications</strong>.</span></li>
+            <li><span>Open SmarTV. macOS says it can't check the app, because it isn't from the App Store. Click <strong>Done</strong>.</span></li>
+            <li><span>Open <strong>System Settings → Privacy &amp; Security</strong>, scroll down and click <strong>Open Anyway</strong> next to SmarTV. You only do this once.</span></li>
+            <li><span>When macOS asks about the keychain, choose <strong>Always Allow</strong>. SmarTV keeps your IPTV password there, encrypted.</span></li>
+          </ol>
+          <p class="alt"><strong>Says the app is damaged?</strong> Run this in Terminal, then open it again:</p>
+          <div class="cmd"><code>xattr -dr com.apple.quarantine /Applications/SmarTV.app</code><button class="copy" type="button" aria-label="Copy command"><i class="ph ph-copy" aria-hidden="true"></i></button></div>
+        </article>
+        <article aria-labelledby="ubu-title">
+          <h3 id="ubu-title"><i class="ph-fill ph-linux-logo" aria-hidden="true"></i>Ubuntu</h3>
+          <ol class="steps">
+            <li><span>Open a terminal in your <strong>Downloads</strong> folder and install the package:
+              <div class="cmd"><code>sudo apt install ./SmarTV-*-linux-amd64.deb</code><button class="copy" type="button" aria-label="Copy command"><i class="ph ph-copy" aria-hidden="true"></i></button></div></span></li>
+            <li><span>Open <strong>SmarTV</strong> from your app menu.</span></li>
+            <li><span>New versions show a banner in the app with a link to the new package.</span></li>
+          </ol>
+          <p class="alt"><strong>Using the AppImage instead?</strong> Make it runnable, then start it. On Ubuntu 24.04 you may need <code>libfuse2t64</code> first.</p>
+          <div class="cmd"><code>chmod +x SmarTV-*.AppImage &amp;&amp; ./SmarTV-*.AppImage</code><button class="copy" type="button" aria-label="Copy command"><i class="ph ph-copy" aria-hidden="true"></i></button></div>
+        </article>
+      </div>
+      <div class="notice" style="margin-top:1.5rem">
+        <i class="ph ph-sign-in" aria-hidden="true"></i>
+        <p style="margin:0"><strong>First launch:</strong> SmarTV asks for your provider's server address, your username and your password. You can add more accounts, and optional TMDB and OpenSubtitles keys for cast details and English subtitles, in Settings.</p>
+      </div>
+    </section>
+
+    <section id="features" aria-labelledby="feat-title">
+      <h2 id="feat-title">What you get</h2>
+      <p class="sub">Built for watching from the sofa as much as from the desk.</p>
+      <dl class="features">
+        <div><i class="ph ph-squares-four" aria-hidden="true"></i><div><dt>Browse the way you think</dt><dd>Shelves for Hollywood, Bollywood, Punjabi, Lollywood, South Indian and more, plus platform, genre, decade, quality and language filters.</dd></div></div>
+        <div><i class="ph ph-play-circle" aria-hidden="true"></i><div><dt>Playback that holds up</dt><dd>Made for providers that allow one stream at a time. Drops resume where they stopped, and errors say what happened.</dd></div></div>
+        <div><i class="ph ph-fast-forward" aria-hidden="true"></i><div><dt>Fast-forward that speeds up</dt><dd>Tap to jump 10 seconds. Keep pressing and it scans faster, sized to the length of what you're watching.</dd></div></div>
+        <div><i class="ph ph-subtitles" aria-hidden="true"></i><div><dt>English subtitles</dt><dd>Built-in tracks plus subtitles from OpenSubtitles, kept in sync when you skip around.</dd></div></div>
+        <div><i class="ph ph-television-simple" aria-hidden="true"></i><div><dt>Your TV remote</dt><dd>Point the TV Remote Bridge on a Samsung TV at your computer and drive SmarTV from the sofa. It remembers your TV.</dd></div></div>
+        <div><i class="ph ph-lock-key" aria-hidden="true"></i><div><dt>Private by design</dt><dd>Your accounts and keys stay on your computer, encrypted. There is no SmarTV server and no sign-up.</dd></div></div>
+      </dl>
+    </section>
+  </main>
+
+  <footer>
+    <span>SmarTV <span id="foot-version"></span>· a personal IPTV player</span>
+    <span><a href="https://github.com/Tayyab-Tahir1/smartv-releases/releases">All releases and notes</a></span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var REPO = "Tayyab-Tahir1/smartv-releases";
+  var MATCH = { mac: /-mac-arm64\.dmg$/, deb: /-linux-amd64\.deb$/, appimage: /\.AppImage$/ };
+  var LABEL = { mac: "Download for Mac", deb: "Download for Ubuntu", appimage: "Download for Linux" };
+
+  function detectOs() {
+    var p = ((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || "").toLowerCase();
+    var ua = navigator.userAgent.toLowerCase();
+    if (/iphone|ipad|android/.test(ua)) return null;
+    if (p.indexOf("mac") === 0 || /mac os x/.test(ua)) return "mac";
+    if (/linux|x11/.test(p + ua)) return "deb";
+    return null;
+  }
+
+  function size(bytes) { return (bytes / 1048576).toFixed(0) + " MB"; }
+
+  function setPrimary(os, url) {
+    var btn = document.getElementById("primary-dl");
+    if (!os || !url) return;
+    btn.href = url;
+    btn.querySelector("span").textContent = LABEL[os];
+  }
+
+  var os = detectOs();
+  if (os) document.getElementById("primary-dl").querySelector("span").textContent = LABEL[os];
+
+  fetch("https://api.github.com/repos/" + REPO + "/releases/latest", { headers: { Accept: "application/vnd.github+json" } })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (rel) {
+      var urls = {};
+      Object.keys(MATCH).forEach(function (key) {
+        var asset = (rel.assets || []).find(function (a) { return MATCH[key].test(a.name); });
+        var row = document.querySelector('[data-asset="' + key + '"]');
+        if (!asset || !row) return;
+        urls[key] = asset.browser_download_url;
+        row.querySelector("[data-link]").href = asset.browser_download_url;
+        row.querySelector("[data-size]").textContent = size(asset.size);
+      });
+      var version = (rel.tag_name || "").replace(/^v/, "");
+      var date = rel.published_at ? new Date(rel.published_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "";
+      if (version) {
+        document.getElementById("release-line").textContent = "Version " + version + (date ? " · " + date : "") + " · free";
+        document.getElementById("foot-version").textContent = version + " ";
+      }
+      setPrimary(os, urls[os]);
+    })
+    .catch(function () { /* links already point at the releases page */ });
+
+  document.querySelectorAll(".copy").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var text = btn.parentElement.querySelector("code").textContent;
+      if (!navigator.clipboard) return;
+      navigator.clipboard.writeText(text).then(function () {
+        btn.classList.add("done");
+        btn.setAttribute("aria-label", "Copied");
+        btn.innerHTML = '<i class="ph ph-check" aria-hidden="true"></i>';
+        setTimeout(function () {
+          btn.classList.remove("done");
+          btn.setAttribute("aria-label", "Copy command");
+          btn.innerHTML = '<i class="ph ph-copy" aria-hidden="true"></i>';
+        }, 1600);
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
